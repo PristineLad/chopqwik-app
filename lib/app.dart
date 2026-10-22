@@ -25,24 +25,37 @@ class AppShell extends StatefulWidget {
 
 class _AppShellState extends State<AppShell> {
   int _selectedIndex = 0;
-  static const _screens = <Widget>[
-    HomeScreen(), PayScreen(), ChopCoinsScreen(), ProfileScreen(),
-  ];
+  String? _requestedService;
+
+  void _openService(String service) {
+    setState(() {
+      _requestedService = service;
+      _selectedIndex = 1;
+    });
+  }
+
+  void _clearRequestedService() => _requestedService = null;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    body: SafeArea(
-      child: IndexedStack(index: _selectedIndex, children: _screens),
-    ),
-    bottomNavigationBar: NavigationBar(
-      selectedIndex: _selectedIndex,
-      onDestinationSelected: (index) => setState(() => _selectedIndex = index),
-      destinations: const [
-        NavigationDestination(icon: Icon(Icons.home_outlined), selectedIcon: Icon(Icons.home_rounded), label: 'Home'),
-        NavigationDestination(icon: Icon(Icons.receipt_long_outlined), selectedIcon: Icon(Icons.receipt_long_rounded), label: 'Pay'),
-        NavigationDestination(icon: Icon(Icons.stars_outlined), selectedIcon: Icon(Icons.stars_rounded), label: 'ChopCoins'),
-        NavigationDestination(icon: Icon(Icons.person_outline_rounded), selectedIcon: Icon(Icons.person_rounded), label: 'Profile'),
-      ],
-    ),
-  );
+  Widget build(BuildContext context) {
+    final screens = <Widget>[
+      HomeScreen(onSelectService: _openService),
+      PayScreen(initialService: _requestedService, onInitialServiceConsumed: _clearRequestedService),
+      const ChopCoinsScreen(),
+      const ProfileScreen(),
+    ];
+    return Scaffold(
+      body: SafeArea(child: IndexedStack(index: _selectedIndex, children: screens)),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: (index) => setState(() => _selectedIndex = index),
+        destinations: const [
+          NavigationDestination(icon: Icon(Icons.home_outlined), selectedIcon: Icon(Icons.home_rounded), label: 'Home'),
+          NavigationDestination(icon: Icon(Icons.receipt_long_outlined), selectedIcon: Icon(Icons.receipt_long_rounded), label: 'Pay'),
+          NavigationDestination(icon: Icon(Icons.stars_outlined), selectedIcon: Icon(Icons.stars_rounded), label: 'ChopCoins'),
+          NavigationDestination(icon: Icon(Icons.person_outline_rounded), selectedIcon: Icon(Icons.person_rounded), label: 'Profile'),
+        ],
+      ),
+    );
+  }
 }
