@@ -10,6 +10,8 @@ void main() {
     expect(find.text('Buy data'), findsOneWidget);
     expect(find.text('Electricity'), findsOneWidget);
     expect(find.text('Cable TV'), findsOneWidget);
+    await tester.ensureVisible(find.text('Rewards are temporarily on hold. You cannot earn or spend ChopCoins yet.'));
+    await tester.pumpAndSettle();
     expect(find.text('Rewards are temporarily on hold. You cannot earn or spend ChopCoins yet.'), findsOneWidget);
     expect(find.text('Preview only. Bill payments are not available yet.'), findsOneWidget);
   });
