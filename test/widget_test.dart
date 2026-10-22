@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:chopqwik_app/app.dart';
 
@@ -17,6 +18,7 @@ void main() {
 
   testWidgets('home service tile opens Pay with the selected service', (tester) async {
     await tester.pumpWidget(const ChopQwikApp());
+    await tester.ensureVisible(find.text('Buy airtime'));
     await tester.tap(find.text('Buy airtime'));
     await tester.pumpAndSettle();
     expect(find.text('Pay a bill'), findsOneWidget);
@@ -32,6 +34,7 @@ void main() {
     await tester.pumpWidget(const ChopQwikApp());
     await tester.tap(find.text('Pay').last);
     await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Airtime').first);
     await tester.tap(find.text('Airtime').first);
     await tester.pumpAndSettle();
     await tester.ensureVisible(find.text('Review details'));
@@ -49,6 +52,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Airtime').first);
     await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byType(DropdownButtonFormField<String>).first);
     await tester.tap(find.byType(DropdownButtonFormField<String>).first);
     await tester.pumpAndSettle();
     await tester.tap(find.text('MTN').last);
@@ -71,5 +75,21 @@ void main() {
     expect(find.text('Rewards are currently on hold'), findsOneWidget);
     expect(find.textContaining('issuance remains frozen'), findsOneWidget);
     expect(find.text('—'), findsOneWidget);
+  });
+
+  testWidgets('Home can select the same service again after leaving Pay', (tester) async {
+    await tester.pumpWidget(const ChopQwikApp());
+    await tester.tap(find.text('Buy airtime'));
+    await tester.pumpAndSettle();
+    expect(find.text('Mobile network'), findsOneWidget);
+
+    await tester.tap(find.text('Home').last);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Buy airtime'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Pay a bill'), findsOneWidget);
+    expect(find.text('Mobile network'), findsOneWidget);
+    expect(find.text('Phone number'), findsOneWidget);
   });
 }

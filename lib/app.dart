@@ -34,6 +34,15 @@ class _AppShellState extends State<AppShell> {
     });
   }
 
+  void _selectTab(int index) {
+    setState(() {
+      _selectedIndex = index;
+      // Consume a Home-originated service request when leaving Pay. This
+      // allows the same service to be selected again on a later visit to Home.
+      if (index != 1) _requestedService = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screens = <Widget>[
@@ -46,7 +55,7 @@ class _AppShellState extends State<AppShell> {
       body: SafeArea(child: IndexedStack(index: _selectedIndex, children: screens)),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
-        onDestinationSelected: (index) => setState(() => _selectedIndex = index),
+        onDestinationSelected: _selectTab,
         destinations: const [
           NavigationDestination(icon: Icon(Icons.home_outlined), selectedIcon: Icon(Icons.home_rounded), label: 'Home'),
           NavigationDestination(icon: Icon(Icons.receipt_long_outlined), selectedIcon: Icon(Icons.receipt_long_rounded), label: 'Pay'),
