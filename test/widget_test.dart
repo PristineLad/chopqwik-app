@@ -72,4 +72,20 @@ void main() {
     expect(find.textContaining('issuance remains frozen'), findsOneWidget);
     expect(find.text('—'), findsOneWidget);
   });
+
+  testWidgets('Home can select the same service again after leaving Pay', (tester) async {
+    await tester.pumpWidget(const ChopQwikApp());
+    await tester.tap(find.text('Buy airtime'));
+    await tester.pumpAndSettle();
+    expect(find.text('Mobile network'), findsOneWidget);
+
+    await tester.tap(find.text('Home').last);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Buy airtime'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Pay a bill'), findsOneWidget);
+    expect(find.text('Mobile network'), findsOneWidget);
+    expect(find.text('Phone number'), findsOneWidget);
+  });
 }
