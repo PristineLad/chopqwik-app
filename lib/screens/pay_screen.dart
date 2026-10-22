@@ -82,7 +82,7 @@ class _PayScreenState extends State<PayScreen> {
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             if (_selectedService == 'Airtime' || _selectedService == 'Mobile data') ...[
               DropdownButtonFormField<String>(
-                value: _selectedNetwork,
+                initialValue: _selectedNetwork,
                 decoration: const InputDecoration(labelText: 'Mobile network', helperText: 'Choose the network for this phone'),
                 items: _networks.map((network) => DropdownMenuItem(value: network, child: Text(network))).toList(),
                 onChanged: (value) => setState(() => _selectedNetwork = value),
@@ -92,7 +92,7 @@ class _PayScreenState extends State<PayScreen> {
             ],
             if (_selectedService == 'Electricity') ...[
               DropdownButtonFormField<String>(
-                value: _selectedMeterType,
+                initialValue: _selectedMeterType,
                 decoration: const InputDecoration(labelText: 'Meter type'),
                 items: const [
                   DropdownMenuItem(value: 'prepaid', child: Text('Prepaid meter')),
