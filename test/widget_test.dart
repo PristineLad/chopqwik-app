@@ -18,6 +18,7 @@ void main() {
 
   testWidgets('home service tile opens Pay with the selected service', (tester) async {
     await tester.pumpWidget(const ChopQwikApp());
+    await tester.ensureVisible(find.text('Buy airtime'));
     await tester.tap(find.text('Buy airtime'));
     await tester.pumpAndSettle();
     expect(find.text('Pay a bill'), findsOneWidget);
@@ -33,6 +34,7 @@ void main() {
     await tester.pumpWidget(const ChopQwikApp());
     await tester.tap(find.text('Pay').last);
     await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Airtime').first);
     await tester.tap(find.text('Airtime').first);
     await tester.pumpAndSettle();
     await tester.ensureVisible(find.text('Review details'));
@@ -50,6 +52,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Airtime').first);
     await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byType(DropdownButtonFormField<String>).first);
     await tester.tap(find.byType(DropdownButtonFormField<String>).first);
     await tester.pumpAndSettle();
     await tester.tap(find.text('MTN').last);
