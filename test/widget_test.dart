@@ -23,7 +23,9 @@ void main() {
     expect(find.text('Airtime'), findsOneWidget);
     expect(find.text('Mobile network'), findsOneWidget);
     expect(find.text('Phone number'), findsOneWidget);
-    expect(find.text('Preview only. No money will be collected and no bill will be paid. Do not treat this screen as a receipt.'), findsOneWidget);
+    final warning = find.text('Preview only. No money will be collected and no bill will be paid. Do not treat this screen as a receipt.');
+    await tester.scrollUntilVisible(warning, 250, scrollable: find.byType(Scrollable).first);
+    expect(warning, findsOneWidget);
   });
 
   testWidgets('airtime preview validates required fields before review', (tester) async {
