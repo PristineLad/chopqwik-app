@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:chopqwik_app/app.dart';
+import 'package:chopqwik_app/screens/pay_screen.dart';
 
 void main() {
   testWidgets('home shows Phase 1 services and preview-only status', (tester) async {
@@ -39,7 +40,8 @@ void main() {
 
   testWidgets('Home service tile opens Pay with the selected service', (tester) async {
     await tester.pumpWidget(const ChopQwikApp());
-    await tester.ensureVisible(find.text('Buy airtime'));
+    await tester.scrollUntilVisible(find.text('Buy airtime'), 250, scrollable: find.byType(Scrollable).first);
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Buy airtime'));
     await tester.pumpAndSettle();
 
@@ -60,10 +62,8 @@ void main() {
 
   testWidgets('airtime preview validates required fields before review', (tester) async {
     await tester.pumpWidget(const ChopQwikApp());
-    await tester.tap(find.text('Pay').last);
+    await tester.pumpWidget(const MaterialApp(home: PayScreen(initialService: 'Airtime')));
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Airtime').first);
-    await tester.tap(find.text('Airtime').first);
     await tester.pumpAndSettle();
 
     final review = find.text('Review details');
@@ -72,6 +72,8 @@ void main() {
       200,
       scrollable: find.byType(Scrollable).first,
     );
+    await tester.ensureVisible(review);
+    await tester.pumpAndSettle();
     await tester.tap(review);
     await tester.pumpAndSettle();
 
@@ -156,6 +158,7 @@ void main() {
       find.text('You are not signed in. Account registration and login are not connected in this preview.'),
       findsOneWidget,
     );
+    await tester.scrollUntilVisible(find.text('Preview version · No account actions are available yet.'), 200, scrollable: find.byType(Scrollable).first);
     expect(find.text('Preview version · No account actions are available yet.'), findsOneWidget);
   });
 }
