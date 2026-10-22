@@ -26,10 +26,12 @@ class AppShell extends StatefulWidget {
 class _AppShellState extends State<AppShell> {
   int _selectedIndex = 0;
   String? _requestedService;
+  int _payScreenGeneration = 0;
 
   void _openService(String service) {
     setState(() {
       _requestedService = service;
+      _payScreenGeneration++;
       _selectedIndex = 1;
     });
   }
@@ -47,7 +49,10 @@ class _AppShellState extends State<AppShell> {
   Widget build(BuildContext context) {
     final screens = <Widget>[
       HomeScreen(onSelectService: _openService),
-      PayScreen(key: ValueKey(_requestedService), initialService: _requestedService),
+      PayScreen(
+        key: ValueKey('pay-screen-$_payScreenGeneration'),
+        initialService: _requestedService,
+      ),
       const ChopCoinsScreen(),
       const ProfileScreen(),
     ];
