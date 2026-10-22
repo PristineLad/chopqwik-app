@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required this.onSelectService});
+  final ValueChanged<String> onSelectService;
 
   @override
   Widget build(BuildContext context) => ListView(
@@ -14,12 +15,26 @@ class HomeScreen extends StatelessWidget {
           SizedBox(height: 3),
           Text('Chop life, ChopQwik.', style: TextStyle(color: AppTheme.muted, fontSize: 13)),
         ])),
-        IconButton(tooltip: 'Help and notifications', onPressed: () => _notice(context, 'Help and notifications'), icon: const Icon(Icons.help_outline_rounded)),
+        IconButton(
+          tooltip: 'Help and support',
+          onPressed: () => showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Help and support'),
+              content: const Text('This is a preview version of ChopQwik. Bill payments are not enabled yet. Please do not enter payment details or send money through this preview.'),
+              actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close'))],
+            ),
+          ),
+          icon: const Icon(Icons.help_outline_rounded),
+        ),
       ]),
       const SizedBox(height: 22),
       Container(
         padding: const EdgeInsets.all(22),
-        decoration: BoxDecoration(gradient: const LinearGradient(colors: [AppTheme.primaryDark, AppTheme.primary], begin: Alignment.topLeft, end: Alignment.bottomRight), borderRadius: BorderRadius.circular(24)),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(colors: [AppTheme.primaryDark, AppTheme.primary], begin: Alignment.topLeft, end: Alignment.bottomRight),
+          borderRadius: BorderRadius.circular(24),
+        ),
         child: const Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text('BILLS MADE SIMPLE', style: TextStyle(color: AppTheme.accent, fontSize: 12, fontWeight: FontWeight.w800, letterSpacing: 0.8)),
           SizedBox(height: 10),
@@ -35,12 +50,12 @@ class HomeScreen extends StatelessWidget {
       const SizedBox(height: 14),
       GridView.count(
         crossAxisCount: 2, crossAxisSpacing: 12, mainAxisSpacing: 12,
-        shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), childAspectRatio: 1.25,
+        shrinkWrap: true, physics: const NeverScrollableScrollPhysics(), childAspectRatio: 1.15,
         children: [
-          _BillTile(icon: Icons.phone_android_rounded, title: 'Buy airtime', subtitle: 'Top up a phone', onTap: () => _notice(context, 'Airtime')),
-          _BillTile(icon: Icons.language_rounded, title: 'Buy data', subtitle: 'Choose a data plan', onTap: () => _notice(context, 'Data')),
-          _BillTile(icon: Icons.bolt_rounded, title: 'Electricity', subtitle: 'Pay your meter', onTap: () => _notice(context, 'Electricity')),
-          _BillTile(icon: Icons.live_tv_rounded, title: 'Cable TV', subtitle: 'Pay your TV bill', onTap: () => _notice(context, 'Cable TV')),
+          _BillTile(icon: Icons.phone_android_rounded, title: 'Buy airtime', subtitle: 'Top up a phone', onTap: () => onSelectService('Airtime')),
+          _BillTile(icon: Icons.language_rounded, title: 'Buy data', subtitle: 'Choose a data plan', onTap: () => onSelectService('Mobile data')),
+          _BillTile(icon: Icons.bolt_rounded, title: 'Electricity', subtitle: 'Pay your meter', onTap: () => onSelectService('Electricity')),
+          _BillTile(icon: Icons.live_tv_rounded, title: 'Cable TV', subtitle: 'Pay your TV bill', onTap: () => onSelectService('Cable TV')),
         ],
       ),
       const SizedBox(height: 22),
@@ -48,22 +63,19 @@ class HomeScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(color: const Color(0xFFFFF3D9), borderRadius: BorderRadius.circular(18), border: Border.all(color: const Color(0xFFFFE0A3))),
         child: const Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Icon(Icons.stars_rounded, color: AppTheme.primaryDark, size: 28), SizedBox(width: 12),
+          Icon(Icons.lock_outline_rounded, color: AppTheme.primaryDark, size: 28),
+          SizedBox(width: 12),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('ChopCoins rewards', style: TextStyle(fontWeight: FontWeight.w800)),
+            Text('ChopCoins rewards are on hold', style: TextStyle(fontWeight: FontWeight.w800)),
             SizedBox(height: 4),
-            Text('Rewards are temporarily on hold. You cannot earn or spend ChopCoins yet.', style: TextStyle(color: Color(0xFF4E3B20), height: 1.4)),
+            Text('You cannot earn or spend ChopCoins yet. We will update this screen when rewards are approved.', style: TextStyle(color: Color(0xFF4E3B20), height: 1.4)),
           ])),
         ]),
       ),
       const SizedBox(height: 16),
-      const Text('Preview only. Bill payments are not available yet.', textAlign: TextAlign.center, style: TextStyle(color: AppTheme.muted, fontSize: 12)),
+      const Text('Preview only · Payments are not enabled', textAlign: TextAlign.center, style: TextStyle(color: AppTheme.muted, fontSize: 12)),
     ],
   );
-
-  static void _notice(BuildContext context, String feature) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$feature is not available yet. We will enable it after testing.')));
-  }
 }
 
 class _BillTile extends StatelessWidget {
@@ -79,11 +91,11 @@ class _BillTile extends StatelessWidget {
     child: InkWell(
       onTap: onTap, borderRadius: BorderRadius.circular(20),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), border: Border.all(color: AppTheme.border)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(width: 46, height: 46, decoration: BoxDecoration(color: const Color(0xFFFFE3E8), borderRadius: BorderRadius.circular(14)), child: Icon(icon, color: AppTheme.primary, size: 27)),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
           Text(title, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15)),
           const SizedBox(height: 4),
           Text(subtitle, style: const TextStyle(color: AppTheme.muted, fontSize: 12)),
