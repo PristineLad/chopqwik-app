@@ -47,7 +47,7 @@ class _AppShellState extends State<AppShell> {
   Widget build(BuildContext context) {
     final screens = <Widget>[
       HomeScreen(onSelectService: _openService),
-      PayScreen(initialService: _requestedService),
+      PayScreen(key: ValueKey(_requestedService), initialService: _requestedService),
       const ChopCoinsScreen(),
       const ProfileScreen(),
     ];
