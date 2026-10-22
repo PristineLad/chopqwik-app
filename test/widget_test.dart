@@ -79,12 +79,14 @@ void main() {
 
   testWidgets('Home can select the same service again after leaving Pay', (tester) async {
     await tester.pumpWidget(const ChopQwikApp());
+    await tester.ensureVisible(find.text('Buy airtime'));
     await tester.tap(find.text('Buy airtime'));
     await tester.pumpAndSettle();
     expect(find.text('Mobile network'), findsOneWidget);
 
     await tester.tap(find.text('Home').last);
     await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Buy airtime'));
     await tester.tap(find.text('Buy airtime'));
     await tester.pumpAndSettle();
 
