@@ -40,9 +40,11 @@ void main() {
 
   testWidgets('Home service tile opens Pay with the selected service', (tester) async {
     await tester.pumpWidget(const ChopQwikApp());
-    await tester.scrollUntilVisible(find.text('Buy airtime'), 250, scrollable: find.byType(Scrollable).first);
+    final airtimeTile = find.text('Buy airtime');
+    await tester.scrollUntilVisible(airtimeTile, 250, scrollable: find.byType(Scrollable).first);
+    await tester.ensureVisible(airtimeTile);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Buy airtime'));
+    await tester.tap(airtimeTile, warnIfMissed: false);
     await tester.pumpAndSettle();
 
     expect(find.text('Pay a bill'), findsOneWidget);
@@ -132,14 +134,18 @@ void main() {
   testWidgets('Home can select the same service again after leaving Pay', (tester) async {
     await tester.pumpWidget(const ChopQwikApp());
     await tester.ensureVisible(find.text('Buy airtime'));
-    await tester.tap(find.text('Buy airtime'));
+    final airtimeTile = find.text('Buy airtime');
+    await tester.ensureVisible(airtimeTile);
+    await tester.tap(airtimeTile, warnIfMissed: false);
     await tester.pumpAndSettle();
     expect(find.text('Mobile network'), findsOneWidget);
 
     await tester.tap(find.text('Home').last);
     await tester.pumpAndSettle();
     await tester.ensureVisible(find.text('Buy airtime'));
-    await tester.tap(find.text('Buy airtime'));
+    final airtimeTileAgain = find.text('Buy airtime');
+    await tester.ensureVisible(airtimeTileAgain);
+    await tester.tap(airtimeTileAgain, warnIfMissed: false);
     await tester.pumpAndSettle();
 
     expect(find.text('Pay a bill'), findsOneWidget);
