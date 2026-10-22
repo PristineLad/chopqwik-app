@@ -145,4 +145,17 @@ void main() {
     expect(find.text('Mobile network'), findsOneWidget);
     expect(find.text('Phone number'), findsOneWidget);
   });
+
+  testWidgets('Profile clearly identifies the app as a guest preview', (tester) async {
+    await tester.pumpWidget(const ChopQwikApp());
+    await tester.tap(find.text('Profile').last);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Guest preview'), findsOneWidget);
+    expect(
+      find.text('You are not signed in. Account registration and login are not connected in this preview.'),
+      findsOneWidget,
+    );
+    expect(find.text('Preview version · No account actions are available yet.'), findsOneWidget);
+  });
 }
