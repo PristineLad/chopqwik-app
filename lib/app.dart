@@ -34,13 +34,11 @@ class _AppShellState extends State<AppShell> {
     });
   }
 
-  void _clearRequestedService() => _requestedService = null;
-
   @override
   Widget build(BuildContext context) {
     final screens = <Widget>[
       HomeScreen(onSelectService: _openService),
-      PayScreen(initialService: _requestedService, onInitialServiceConsumed: _clearRequestedService),
+      PayScreen(initialService: _requestedService),
       const ChopCoinsScreen(),
       const ProfileScreen(),
     ];
