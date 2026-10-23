@@ -3,9 +3,9 @@
 Status: APPROVED DESIGN DIRECTION; implementation and usability testing remain in progress.
 
 ## Brand source of truth
-- Use the supplied official ChopQwik Q symbol and wordmark, preserving their red-to-gold identity.
-- Do not redraw, distort, recolour, or substitute the official logo with a generic bolt icon in final release assets.
-- The supplied logo preview includes a checkerboard background. Do not ship that preview as a logo asset; obtain a clean transparent SVG/PNG or vector source before adding it to Flutter assets.
+- The founder-approved ChopQwik Q symbol and wordmark are included as SVG assets in `assets/images/chopqwik_logo.svg` and `assets/images/chopqwik_icon.svg`.
+- Preserve the red-and-gold identity; do not redraw, distort, recolour, or substitute the logo with a generic bolt icon in final release assets.
+- The SVG assets have transparent backgrounds and are used in the Home and Profile screens.
 - Use a restrained brand palette: deep red as the primary action colour, gold as a supporting accent, neutral surfaces, and high-contrast text.
 - Support a clean light theme first. A dark theme may be added after contrast and device testing; do not make the dark promotional mockup the only theme.
 
