@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:chopqwik_app/app.dart';
 import 'package:chopqwik_app/screens/pay_screen.dart';
 
@@ -7,7 +8,8 @@ void main() {
   testWidgets('home shows Phase 1 services and preview-only status', (tester) async {
     await tester.pumpWidget(const ChopQwikApp());
 
-    expect(find.text('ChopQwik'), findsOneWidget);
+    // The brand name is rendered as the approved logo asset, not live text.
+    expect(find.byType(SvgPicture), findsOneWidget);
     expect(find.text('What would you like to pay for?'), findsOneWidget);
     for (final label in ['Buy airtime', 'Buy data', 'Electricity', 'Cable TV']) {
       await tester.scrollUntilVisible(
