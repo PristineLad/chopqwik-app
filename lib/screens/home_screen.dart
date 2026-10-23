@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../theme/app_theme.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -10,10 +11,10 @@ class HomeScreen extends StatelessWidget {
     padding: const EdgeInsets.fromLTRB(20, 18, 20, 28),
     children: [
       Row(children: [
-        const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('ChopQwik', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800, letterSpacing: -0.5)),
-          SizedBox(height: 3),
-          Text('Chop life, ChopQwik.', style: TextStyle(color: AppTheme.muted, fontSize: 13)),
+        Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          SvgPicture.asset('assets/images/chopqwik_logo.svg', height: 36, fit: BoxFit.contain, alignment: Alignment.centerLeft),
+          const SizedBox(height: 6),
+          const Text('Chop life, ChopQwik.', style: TextStyle(color: AppTheme.muted, fontSize: 13)),
         ])),
         IconButton(
           tooltip: 'Help and support',
