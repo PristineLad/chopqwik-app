@@ -69,7 +69,13 @@ void main() {
   });
 
   testWidgets('airtime preview validates required fields before review', (tester) async {
-    await tester.pumpWidget(const MaterialApp(home: PayScreen(initialService: 'Airtime')));
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: PayScreen(initialService: 'Airtime'),
+        ),
+      ),
+    );
     await tester.pumpAndSettle();
     await tester.pumpAndSettle();
 
