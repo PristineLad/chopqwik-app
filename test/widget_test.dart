@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:chopqwik_app/app.dart';
+import 'package:chopqwik_app/screens/pay_screen.dart';
 
 void main() {
   testWidgets('home shows Phase 1 services and preview-only status', (tester) async {
@@ -39,11 +40,20 @@ void main() {
 
   testWidgets('Home service tile opens Pay with the selected service', (tester) async {
     await tester.pumpWidget(const ChopQwikApp());
-    await tester.ensureVisible(find.text('Buy airtime'));
-    await tester.tap(find.text('Buy airtime'));
+    final airtimeTile = find.text('Buy airtime');
+    await tester.scrollUntilVisible(airtimeTile, 250, scrollable: find.byType(Scrollable).first);
+    final airtimeTapTarget = find.ancestor(
+      of: airtimeTile,
+      matching: find.byType(InkWell),
+    ).first;
+    await tester.ensureVisible(airtimeTapTarget);
+    await tester.pumpAndSettle();
+    await tester.tap(airtimeTapTarget);
     await tester.pumpAndSettle();
 
     expect(find.text('Pay a bill'), findsOneWidget);
+    final payScrollable = find.descendant(of: find.byKey(const ValueKey('pay-screen-list')), matching: find.byType(Scrollable)).first;
+    await tester.scrollUntilVisible(find.text('Mobile network'), 200, scrollable: payScrollable);
     expect(find.text('Mobile network'), findsOneWidget);
     expect(find.text('Phone number'), findsOneWidget);
 
@@ -53,17 +63,20 @@ void main() {
     await tester.scrollUntilVisible(
       warning,
       200,
-      scrollable: find.byType(Scrollable).first,
+      scrollable: payScrollable,
     );
     expect(warning, findsOneWidget);
   });
 
   testWidgets('airtime preview validates required fields before review', (tester) async {
-    await tester.pumpWidget(const ChopQwikApp());
-    await tester.tap(find.text('Pay').last);
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: PayScreen(initialService: 'Airtime'),
+        ),
+      ),
+    );
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Airtime').first);
-    await tester.tap(find.text('Airtime').first);
     await tester.pumpAndSettle();
 
     final review = find.text('Review details');
@@ -72,9 +85,15 @@ void main() {
       200,
       scrollable: find.byType(Scrollable).first,
     );
-    await tester.tap(review);
+    await tester.ensureVisible(review);
+    await tester.pumpAndSettle();
+    final reviewButton = find.byType(FilledButton).first;
+    await tester.ensureVisible(reviewButton);
+    await tester.tap(reviewButton);
     await tester.pumpAndSettle();
 
+    final payScrollable = find.descendant(of: find.byKey(const ValueKey('pay-screen-list')), matching: find.byType(Scrollable)).first;
+    await tester.scrollUntilVisible(find.text('Mobile network'), 200, scrollable: payScrollable);
     expect(find.text('Choose a mobile network'), findsOneWidget);
     expect(find.text('Enter your phone number'), findsOneWidget);
     expect(find.text('Enter an amount using numbers only'), findsOneWidget);
@@ -130,19 +149,47 @@ void main() {
 
   testWidgets('Home can select the same service again after leaving Pay', (tester) async {
     await tester.pumpWidget(const ChopQwikApp());
-    await tester.ensureVisible(find.text('Buy airtime'));
-    await tester.tap(find.text('Buy airtime'));
+    final airtimeTile = find.text('Buy airtime');
+    final airtimeTapTarget = find.ancestor(
+      of: airtimeTile,
+      matching: find.byType(InkWell),
+    ).first;
+    await tester.ensureVisible(airtimeTapTarget);
+    await tester.tap(airtimeTapTarget);
     await tester.pumpAndSettle();
+    final firstPayScrollable = find.descendant(of: find.byKey(const ValueKey('pay-screen-list')), matching: find.byType(Scrollable)).first;
+    await tester.scrollUntilVisible(find.text('Mobile network'), 200, scrollable: firstPayScrollable);
     expect(find.text('Mobile network'), findsOneWidget);
 
     await tester.tap(find.text('Home').last);
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Buy airtime'));
-    await tester.tap(find.text('Buy airtime'));
+    final airtimeTileAgain = find.text('Buy airtime');
+    final airtimeTapTargetAgain = find.ancestor(
+      of: airtimeTileAgain,
+      matching: find.byType(InkWell),
+    ).first;
+    await tester.ensureVisible(airtimeTapTargetAgain);
+    await tester.tap(airtimeTapTargetAgain);
     await tester.pumpAndSettle();
 
     expect(find.text('Pay a bill'), findsOneWidget);
+    final secondPayScrollable = find.descendant(of: find.byKey(const ValueKey('pay-screen-list')), matching: find.byType(Scrollable)).first;
+    await tester.scrollUntilVisible(find.text('Mobile network'), 200, scrollable: secondPayScrollable);
     expect(find.text('Mobile network'), findsOneWidget);
     expect(find.text('Phone number'), findsOneWidget);
+  });
+
+  testWidgets('Profile clearly identifies the app as a guest preview', (tester) async {
+    await tester.pumpWidget(const ChopQwikApp());
+    await tester.tap(find.text('Profile').last);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Guest preview'), findsOneWidget);
+    expect(
+      find.text('You are not signed in. Account registration and login are not connected in this preview.'),
+      findsOneWidget,
+    );
+    await tester.scrollUntilVisible(find.text('Preview version · No account actions are available yet.'), 200, scrollable: find.byType(Scrollable).first);
+    expect(find.text('Preview version · No account actions are available yet.'), findsOneWidget);
   });
 }
