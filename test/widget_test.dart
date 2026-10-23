@@ -52,6 +52,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Pay a bill'), findsOneWidget);
+    final payScrollable = find.descendant(of: find.byType(PayScreen), matching: find.byType(Scrollable)).first;
+    await tester.scrollUntilVisible(find.text('Mobile network'), 200, scrollable: payScrollable);
     expect(find.text('Mobile network'), findsOneWidget);
     expect(find.text('Phone number'), findsOneWidget);
 
