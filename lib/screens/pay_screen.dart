@@ -61,6 +61,7 @@ class _PayScreenState extends State<PayScreen> {
 
   @override
   Widget build(BuildContext context) => ListView(
+    key: const ValueKey('pay-screen-list'),
     padding: const EdgeInsets.fromLTRB(20, 22, 20, 32),
     children: [
       const Text('Pay a bill', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800)),
