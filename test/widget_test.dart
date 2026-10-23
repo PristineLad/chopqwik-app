@@ -63,7 +63,7 @@ void main() {
     await tester.scrollUntilVisible(
       warning,
       200,
-      scrollable: find.byType(Scrollable).first,
+      scrollable: payScrollable,
     );
     expect(warning, findsOneWidget);
   });
@@ -86,6 +86,8 @@ void main() {
     await tester.tap(reviewButton);
     await tester.pumpAndSettle();
 
+    final payScrollable = find.descendant(of: find.byType(PayScreen), matching: find.byType(Scrollable)).first;
+    await tester.scrollUntilVisible(find.text('Mobile network'), 200, scrollable: payScrollable);
     expect(find.text('Choose a mobile network'), findsOneWidget);
     expect(find.text('Enter your phone number'), findsOneWidget);
     expect(find.text('Enter an amount using numbers only'), findsOneWidget);
@@ -149,6 +151,8 @@ void main() {
     await tester.ensureVisible(airtimeTapTarget);
     await tester.tap(airtimeTapTarget);
     await tester.pumpAndSettle();
+    final firstPayScrollable = find.descendant(of: find.byType(PayScreen), matching: find.byType(Scrollable)).first;
+    await tester.scrollUntilVisible(find.text('Mobile network'), 200, scrollable: firstPayScrollable);
     expect(find.text('Mobile network'), findsOneWidget);
 
     await tester.tap(find.text('Home').last);
