@@ -52,7 +52,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Pay a bill'), findsOneWidget);
-    final payScrollable = find.descendant(of: find.byType(PayScreen), matching: find.byType(Scrollable)).first;
+    final payScrollable = find.descendant(of: find.byKey(const ValueKey('pay-screen-list')), matching: find.byType(Scrollable)).first;
     await tester.scrollUntilVisible(find.text('Mobile network'), 200, scrollable: payScrollable);
     expect(find.text('Mobile network'), findsOneWidget);
     expect(find.text('Phone number'), findsOneWidget);
@@ -86,7 +86,7 @@ void main() {
     await tester.tap(reviewButton);
     await tester.pumpAndSettle();
 
-    final payScrollable = find.descendant(of: find.byType(PayScreen), matching: find.byType(Scrollable)).first;
+    final payScrollable = find.descendant(of: find.byKey(const ValueKey('pay-screen-list')), matching: find.byType(Scrollable)).first;
     await tester.scrollUntilVisible(find.text('Mobile network'), 200, scrollable: payScrollable);
     expect(find.text('Choose a mobile network'), findsOneWidget);
     expect(find.text('Enter your phone number'), findsOneWidget);
@@ -151,7 +151,7 @@ void main() {
     await tester.ensureVisible(airtimeTapTarget);
     await tester.tap(airtimeTapTarget);
     await tester.pumpAndSettle();
-    final firstPayScrollable = find.descendant(of: find.byType(PayScreen), matching: find.byType(Scrollable)).first;
+    final firstPayScrollable = find.descendant(of: find.byKey(const ValueKey('pay-screen-list')), matching: find.byType(Scrollable)).first;
     await tester.scrollUntilVisible(find.text('Mobile network'), 200, scrollable: firstPayScrollable);
     expect(find.text('Mobile network'), findsOneWidget);
 
@@ -167,6 +167,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Pay a bill'), findsOneWidget);
+    final secondPayScrollable = find.descendant(of: find.byKey(const ValueKey('pay-screen-list')), matching: find.byType(Scrollable)).first;
+    await tester.scrollUntilVisible(find.text('Mobile network'), 200, scrollable: secondPayScrollable);
     expect(find.text('Mobile network'), findsOneWidget);
     expect(find.text('Phone number'), findsOneWidget);
   });
