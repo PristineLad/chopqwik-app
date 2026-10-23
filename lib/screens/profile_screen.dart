@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../theme/app_theme.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -8,6 +9,8 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) => ListView(
     padding: const EdgeInsets.fromLTRB(20, 22, 20, 32),
     children: [
+      Center(child: SvgPicture.asset('assets/images/chopqwik_logo.svg', height: 42, fit: BoxFit.contain)),
+      const SizedBox(height: 18),
       const Text('Profile', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800)),
       const SizedBox(height: 8),
       const Text('Your account and help options.', style: TextStyle(color: AppTheme.muted, height: 1.45)),

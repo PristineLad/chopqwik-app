@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class AppTheme {
   AppTheme._();
 
-  // Provisional palette derived from the supplied mockups.
-  // Final brand assets and colour values will be confirmed when the official logo files arrive.
+  // Brand palette aligned with the official ChopQwik logo
+  // (deep red primary, gold accent).
   static const Color primary = Color(0xFFE5092A);
   static const Color primaryDark = Color(0xFF9F1027);
   static const Color accent = Color(0xFFFFB52E);

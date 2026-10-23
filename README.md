@@ -18,7 +18,7 @@ ChopQwik's broader company vision includes payments, rewards, engagement, commer
 - Pay includes a local-only preview form with service-specific fields and basic input validation. Reviewing details is not a payment and does not contact any provider.
 - Profile clearly identifies guest preview and unavailable account actions.
 - ChopCoins shows no spendable balance and states that rewards are on hold.
-- Official logo is intentionally not finalised; the founder will provide the final asset later.
+- Official ChopQwik logo assets are included under `assets/images/` and used on Home and Profile.
 - Supabase Auth, live catalogue, real provider payment flow, transaction history and support actions are not connected.
 - Real bill purchase must remain disabled until provider catalogue and sandbox payment/reconciliation tests pass.
 - ChopCoins issuance/spending remains disabled while the board reserve hard freeze is active.
